@@ -1,0 +1,27 @@
+ref_path    = './ref/'
+[db]
+    [[Production]]
+        host = candidate.19.mongolayer.com
+        port = 10202
+        name = ledge-zeppelin
+        user = revmsg
+        pass = xLbqeEBBC73snr
+        url = mongodb://revmsg:xLbqeEBBC73snr@candidate.19.mongolayer.com:10202/ledge-zeppelin
+    
+	[[Production Fall 2014]]
+    	host = candidate.19.mongolayer.com
+    	port = 10202
+    	name = ledge-zeppelin-fall-2014
+    	user = revmsg
+    	pass = H3iCJZUgkN2PXB
+        url = mongodb://revmsg:H3iCJZUgkN2PXB@candidate.19.mongolayer.com:10202/ledge-zeppelin-fall-2014
+
+	[[Staging]]
+    	host = kahana.mongohq.com
+    	port = 10052
+    	name = ledge-zeppelin-staging
+    	user = revmsg
+    	pass = 3mFKHDMfFY2DGw
+    	url = mongodb://revmsg:3mFKHDMfFY2DGw@kahana.mongohq.com:10052/ledge-zeppelin-staging
+
+
