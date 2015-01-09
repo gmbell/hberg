@@ -1421,7 +1421,36 @@ def audio_list(legislators):
         legislators.remove(each)
     result      = []
     for each in legislators:
-        s       = '%s %s' % (each['title'], each['name'])
+        try:
+            p       = each['prounciation']
+            assert  p != ''
+            s       = '%s %s (' + p + ')' % (each['title'], each['name'])
+        except:
+            s       = '%s %s' % (each['title'], each['name'])
+        result.append(s)
+    result.sort()
+    return result
+def rich_list(legislators):
+    drop_list = []
+    for each in legislators:
+        if has_audio(each):
+            drop_list.append(each)
+    for each in drop_list:
+        legislators.remove(each)
+    result      = []
+    for each in legislators:
+        try:
+            p       = each['prounciation']
+            assert  p != ''
+            s       = '%s %s (' + p + ')' % (each['title'], each['name'])
+        except:
+            s       = '%s %s' % (each['title'], each['name'])
+        try:
+            d       = each['district']
+            assert d != ''
+            s           = each['state'] + ' (' + d + ') - ' + s
+        except:
+            s           = each['state'] + ' - ' + s
         result.append(s)
     result.sort()
     return result
@@ -1434,8 +1463,33 @@ def remove_dups(table, criteria):
             snowball(table, one_name[0])
             for i in range(1, len(one_name)):
                 delete_one(table, one_name[i], '_id')
-def fill_info(table, target, sources):
-    email
+def clean_audio_flags(table, criteria):
+    legs = pull_entries(table, criteria)
+    update_list = []
+    for each in legs:
+        if has_audio(each):
+            if 'audio_path' not in each.keys():
+                s       = 'http://cdn.ledgezeppelin.com/' + each['filename']
+                update = [each, 'audio_path', s]
+                update_list.append(update)
+            elif 'filename' not in each.keys():
+                s       = str(each['audio_path'])
+                i   = s.rfind('/')
+                s   = s[i+1:]
+                update = [each, 'filename', s]  
+                update_list.append(update)
+            elif each['audio_path'] == '':
+                s       = 'http://cdn.ledgezeppelin.com/' + each['filename']
+                update = [each, 'audio_path', s]
+                update_list.append(update)
+            elif each['filename'] == '':
+                s       = str(each['audio_path'])
+                i   = s.rfind('/')
+                s   = s[i+1:]
+                update = [each, 'filename', s]  
+                update_list.append(update)  
+    for each in update_list:
+        update_one(table, each[0], '_id', each[1], each[2])
     
     
 #### main() ##################################################################
